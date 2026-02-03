@@ -1,12 +1,14 @@
 package repository;
 
+import interfaces.CrudRepository;
 import model.*;
 import utils.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class AppRepo {
+public class AppRepo implements CrudRepository<Application> {
 
+    @Override
     public void add(Application app) {
         try {
             Connection conn = DatabaseConnection.connect();
@@ -19,13 +21,11 @@ public class AppRepo {
             st.setString(4, app.getType());
 
             if (app instanceof EasyApp) {
-                EasyApp e = (EasyApp) app;
-                st.setString(5, e.getSite());
+                st.setString(5, ((EasyApp) app).getSite());
                 st.setInt(6, 0);
             } else {
-                HardApp h = (HardApp) app;
                 st.setString(5, "");
-                st.setInt(6, h.getRoundCount());
+                st.setInt(6, ((HardApp) app).getStages());
             }
 
             st.executeUpdate();
@@ -35,6 +35,7 @@ public class AppRepo {
         }
     }
 
+    @Override
     public ArrayList<Application> getAll() {
         ArrayList<Application> list = new ArrayList<>();
         try {
@@ -44,31 +45,29 @@ public class AppRepo {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                int cId = rs.getInt("company_id");
-                String cName = rs.getString("name"); // имя компании
-                String cInd = rs.getString("industry");
-                Company comp = new Company(cId, cName, cInd);
+                Company comp = new Company(
+                        rs.getInt("company_id"),
+                        rs.getString("name"),
+                        rs.getString("industry")
+                );
 
                 String type = rs.getString("type");
-
                 if (type.equals("EASY")) {
-                    EasyApp a = new EasyApp(
+                    list.add(new EasyApp(
                             rs.getInt("id"),
                             rs.getString("job_title"),
                             comp,
                             rs.getString("status"),
                             rs.getString("platform")
-                    );
-                    list.add(a);
+                    ));
                 } else {
-                    HardApp a = new HardApp(
+                    list.add(new HardApp(
                             rs.getInt("id"),
                             rs.getString("job_title"),
                             comp,
                             rs.getString("status"),
                             rs.getInt("stages")
-                    );
-                    list.add(a);
+                    ));
                 }
             }
             conn.close();
@@ -78,14 +77,20 @@ public class AppRepo {
         return list;
     }
 
-    public void deleteById(int id) {
+    @Override
+    public Application getById(int id) {
+        return null;
+    }
+
+    @Override
+    public void delete(int id) {
         try {
             Connection conn = DatabaseConnection.connect();
             PreparedStatement st = conn.prepareStatement("DELETE FROM applications WHERE id = ?");
             st.setInt(1, id);
             st.executeUpdate();
             conn.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

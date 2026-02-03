@@ -1,14 +1,14 @@
 package repository;
 
+import interfaces.CrudRepository;
 import model.Company;
 import utils.DatabaseConnection;
-
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class CompanyRepo {
+public class CompanyRepo implements CrudRepository<Company> {
 
+    @Override
     public void add(Company c) {
         try {
             Connection conn = DatabaseConnection.connect();
@@ -23,6 +23,7 @@ public class CompanyRepo {
         }
     }
 
+    @Override
     public ArrayList<Company> getAll() {
         ArrayList<Company> list = new ArrayList<>();
         try {
@@ -43,6 +44,7 @@ public class CompanyRepo {
         return list;
     }
 
+    @Override
     public Company getById(int id) {
         Company c = null;
         try {
@@ -58,5 +60,18 @@ public class CompanyRepo {
             e.printStackTrace();
         }
         return c;
+    }
+
+    @Override
+    public void delete(int id) {
+        try {
+            Connection conn = DatabaseConnection.connect();
+            PreparedStatement st = conn.prepareStatement("DELETE FROM companies WHERE id = ?");
+            st.setInt(1, id);
+            st.executeUpdate();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

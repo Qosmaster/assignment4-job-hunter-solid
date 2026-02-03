@@ -9,14 +9,8 @@ public abstract class BaseEntity {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public String getName() { return name; }
 
-    public String getName() {
-        return name;
-    }
-
-    // Абстрактный метод
     public abstract String getInfo();
 }

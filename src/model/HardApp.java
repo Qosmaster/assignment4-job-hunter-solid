@@ -1,28 +1,25 @@
 package model;
 
 public class HardApp extends Application {
-    private int roundCount;
+    private int stages;
 
-    public HardApp(int id, String name, Company company, String status, int roundCount) {
+    public HardApp(int id, String name, Company company, String status, int stages) {
         super(id, name, company, status);
-        this.roundCount = roundCount;
+        this.stages = stages;
     }
 
+    @Override
     public String getInfo() {
-        return "HARD Job: " + name + " (" + roundCount + " interviews...)";
+        return "Hard Job: " + name + " at " + company.getName() + " (" + stages + " stages)";
     }
 
-    public String getType() {
-        return "HARD";
+    @Override
+    public String getType() { return "HARD"; }
+
+    @Override
+    public boolean isValid() {
+        return name != null && !name.isEmpty() && stages > 0;
     }
 
-    public boolean checkData() {
-        if (roundCount > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public int getRoundCount() { return roundCount; }
+    public int getStages() { return stages; }
 }

@@ -8,18 +8,17 @@ public class EasyApp extends Application {
         this.site = site;
     }
 
+    @Override
     public String getInfo() {
-        return "Job: " + name + " in " + company.getName() + " via " + site;
+        return "Easy Job: " + name + " at " + company.getName() + " (" + site + ")";
     }
 
-    public String getType() {
-        return "EASY";
-    }
+    @Override
+    public String getType() { return "EASY"; }
 
-    public boolean checkData() {
-        if (name == null) return false;
-        if (name.length() == 0) return false;
-        return true;
+    @Override
+    public boolean isValid() {
+        return name != null && !name.isEmpty() && site != null;
     }
 
     public String getSite() { return site; }

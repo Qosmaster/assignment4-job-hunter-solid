@@ -1,8 +1,8 @@
 package model;
 
-import interfaces.MyValidation;
+import interfaces.Validatable;
 
-public abstract class Application extends BaseEntity implements MyValidation {
+public abstract class Application extends BaseEntity implements Validatable {
     protected Company company;
     protected String status;
 
@@ -14,7 +14,6 @@ public abstract class Application extends BaseEntity implements MyValidation {
 
     public Company getCompany() { return company; }
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
 
     public abstract String getType();
 }

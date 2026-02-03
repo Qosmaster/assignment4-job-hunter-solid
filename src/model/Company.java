@@ -14,7 +14,4 @@ public class Company {
     public int getId() { return id; }
     public String getName() { return name; }
     public String getIndustry() { return industry; }
-    public String toString() {
-        return name + " (" + industry + ")";
-    }
 }

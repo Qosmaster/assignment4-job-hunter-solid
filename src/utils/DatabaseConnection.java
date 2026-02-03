@@ -10,10 +10,8 @@ public class DatabaseConnection {
             String url = "jdbc:postgresql://localhost:5432/job_hunter";
             String user = "postgres";
             String pass = "123";
-
             return DriverManager.getConnection(url, user, pass);
         } catch (SQLException e) {
-            System.out.println("Connection failed!");
             e.printStackTrace();
             return null;
         }

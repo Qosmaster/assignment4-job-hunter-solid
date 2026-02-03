@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 import service.AppService;
+import utils.ReflectionUtils;
 import java.util.Scanner;
 
 public class Main {
@@ -10,13 +11,14 @@ public class Main {
         Scanner scan = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\n=== JOB HUNTER MENU ===");
+            System.out.println("\n=== JOB HUNTER SOLID ===");
             System.out.println("1. Add Company");
             System.out.println("2. Add Application");
-            System.out.println("3. Show All Applications");
-            System.out.println("4. Delete Application");
+            System.out.println("3. Show Apps (Sorted)");
+            System.out.println("4. Delete App");
+            System.out.println("5. Reflection Demo");
             System.out.println("0. Exit");
-            System.out.print("Select option: ");
+            System.out.print("Choice: ");
 
             if (scan.hasNextInt()) {
                 int choice = scan.nextInt();
@@ -25,40 +27,35 @@ public class Main {
                 try {
                     switch (choice) {
                         case 1:
-                            System.out.print("Enter Company Name: ");
+                            System.out.print("Name: ");
                             String cName = scan.nextLine();
-                            System.out.print("Enter Industry: ");
+                            System.out.print("Industry: ");
                             String cInd = scan.nextLine();
                             service.createCompany(cName, cInd);
-                            System.out.println("Company added!");
                             break;
 
                         case 2:
                             service.printCompanies();
-                            System.out.print("Enter Company ID from list above: ");
+                            System.out.print("Company ID: ");
                             int cId = scan.nextInt();
                             scan.nextLine();
-                            Company selectedCompany = service.getCompanyById(cId);
+                            Company comp = service.getCompany(cId);
 
-                            System.out.print("Enter Job Title: ");
+                            System.out.print("Title: ");
                             String title = scan.nextLine();
-
-                            System.out.print("Type (1 for Easy, 2 for Hard): ");
+                            System.out.print("Type (1=Easy, 2=Hard): ");
                             int type = scan.nextInt();
                             scan.nextLine();
 
                             if (type == 1) {
-                                System.out.print("Enter Site (e.g. LinkedIn): ");
+                                System.out.print("Site: ");
                                 String site = scan.nextLine();
-                                EasyApp app = new EasyApp(0, title, selectedCompany, "Applied", site);
-                                service.saveApp(app);
+                                service.saveApp(new EasyApp(0, title, comp, "New", site));
                             } else {
-                                System.out.print("Number of stages: ");
-                                int stages = scan.nextInt();
-                                HardApp app = new HardApp(0, title, selectedCompany, "Applied", stages);
-                                service.saveApp(app);
+                                System.out.print("Stages: ");
+                                int st = scan.nextInt();
+                                service.saveApp(new HardApp(0, title, comp, "New", st));
                             }
-                            System.out.println("Application saved!");
                             break;
 
                         case 3:
@@ -66,19 +63,18 @@ public class Main {
                             break;
 
                         case 4:
-                            service.printAllApps();
-                            System.out.print("Enter ID to delete: ");
+                            System.out.print("ID to delete: ");
                             int delId = scan.nextInt();
                             service.deleteApp(delId);
-                            System.out.println("Deleted.");
+                            break;
+
+                        case 5:
+                            Company demo = new Company(1, "DemoCorp", "IT");
+                            ReflectionUtils.inspectClass(demo);
                             break;
 
                         case 0:
-                            System.out.println("Bye!");
                             return;
-
-                        default:
-                            System.out.println("Wrong option.");
                     }
                 } catch (Exception e) {
                     System.out.println("Error: " + e.getMessage());
