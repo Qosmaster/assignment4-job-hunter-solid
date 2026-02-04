@@ -1,10 +1,10 @@
-# 👔 Job Hunter v2 (SOLID Edition)
+# Job Hunter v2 (SOLID Edition)
 
 ## Project Overview
 Refactored version of Job Hunter API. Now implements strict **Layered Architecture** and **SOLID Principles**.
 The system manages Job Applications (Easy vs Hardcore) and Companies.
 
-## 🏗 SOLID Implementation
+## SOLID Implementation
 * **SRP (Single Responsibility):**
     * `AppRepo` only handles database SQL.
     * `AppService` handles validation and business logic.
@@ -18,16 +18,16 @@ The system manages Job Applications (Easy vs Hardcore) and Companies.
 * **DIP (Dependency Inversion):**
     * Service layer depends on abstractions (`CrudRepository` interface), not concrete classes.
 
-## 🚀 Advanced Java Features
+## Advanced Java Features
 1. **Generics:** Used in `CrudRepository<T>` to avoid code duplication for `AppRepo` and `CompanyRepo`.
 2. **Lambdas:** Used in `SortUtils` to sort applications by ID: `(a1, a2) -> a1.getId() - a2.getId()`.
 3. **Reflection API:** Used in `ReflectionUtils` to inspect object structure at runtime (prints field names).
 4. **Interface Default Methods:** `Validatable` has a default `printValidationStatus()` method.
 
-## 🛠 How to Run
+## How to Run
 1. Ensure PostgreSQL is running (`job_hunter` db).
 2. Configure credentials in `DbHelper.java`.
 3. Run `Main.java`.
 
-## 📸 Screenshots
+## Screenshots
 (Place your screenshots in the /screenshots folder)
